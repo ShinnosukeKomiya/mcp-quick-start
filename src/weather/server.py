@@ -116,7 +116,7 @@ async def handle_call_tool(
                 return [types.TextContent(type="text", text=f"No active alerts for {state}")]
 
             # Format each alert into a concise string
-            formatted_alerts = [format_alert(feature) for feature in features[:20]] # only take the first 20 alerts
+            formatted_alerts = [format_alert(feature) for feature in features[:20]]  # only take the first 20 alerts
             alerts_text = f"Active alerts for {state}:\n\n" + "\n".join(formatted_alerts)
 
             return [
@@ -150,7 +150,10 @@ async def handle_call_tool(
             points_data = await make_nws_request(client, points_url)
 
             if not points_data:
-                return [types.TextContent(type="text", text=f"Failed to retrieve grid point data for coordinates: {latitude}, {longitude}. This location may not be supported by the NWS API (only US locations are supported).")]
+                return [types.TextContent(
+                    type="text",
+                    text=f"Failed to retrieve grid point data for coordinates: {latitude}, {longitude}. This location may not be supported by the NWS API (only US locations are supported)."
+                )]
 
             # Extract forecast URL from the response
             properties = points_data.get("properties", {})
@@ -207,6 +210,7 @@ async def main():
                 ),
             ),
         )
+
 
 # This is needed if you'd like to connect to a custom client
 if __name__ == "__main__":
